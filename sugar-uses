@@ -1,0 +1,29 @@
+#!/bin/bash
+
+function to_lua_mod {
+   local path=$1
+
+   # Remove first two characters.
+   path=$(echo $path | cut -c 3-)
+   # Remove file extension from path.
+   path="${path%.*}"
+   # Convert slashes to dots.
+   echo $path | tr '/' '.'
+}
+
+FILENAME=$1
+
+if [[ -z "$FILENAME" ]]; then
+   echo "Usage: sugar-uses <filename>"
+   exit 1
+fi
+
+# Extract extension and add lua.
+FILENAME="${FILENAME%.*}"
+FILENAME="$FILENAME.lua"
+
+# Print out all files that use module.
+for path in $(find . -name "$FILENAME"); do
+	mod=$(to_lua_mod $path)
+	find . -name "*.lua" | xargs grep -l "$mod"
+done

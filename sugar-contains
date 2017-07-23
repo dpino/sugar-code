@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+STRING=$1
+EXT=lua
+
+if [[ -z "$STRING" ]]; then
+   echo "Usage: sugar-grep 'string'"
+   exit 1
+fi
+
+grep -r --include="*.$EXT" "$STRING"
